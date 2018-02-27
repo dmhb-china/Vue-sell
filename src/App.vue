@@ -12,9 +12,9 @@
         <router-link to="/seller">商家</router-link>
       </div>
     </div>
-      <transition :name="transitionName">
-        <router-view class="content-view"></router-view>
-      </transition>
+    <transition :name="transitionName">
+      <router-view class="content-view"></router-view>
+    </transition>
   </div>
 </template>
 
@@ -37,7 +37,6 @@
       this.axios.get('./api/seller').then((response) => {
         if (response.data.errno === ERR_OK) {
           this.seller = response.data.data;
-          console.log(this.seller);
         }
       });
     },
@@ -81,6 +80,5 @@
           font-size: 14px
           color: rgb(77,85,93)
           &.active
-            font-size: 16px
             color: rgb(240,20,20)
 </style>

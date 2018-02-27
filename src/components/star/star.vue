@@ -1,6 +1,6 @@
 <template>
     <div class="star" :class="starType">
-      <span v-for="(itemClass, index) in itemClasses" :key="itemClass.id" :class="itemClass" class="star-item"></span>
+      <span v-for="itemClass in itemClasses" :key="itemClass.id" :class="itemClass" class="star-item"></span>
     </div>
 </template>
 
@@ -8,7 +8,7 @@
   const LENGTH = 5;
   const CLS_ON = 'on';
   const CLS_HALF = 'half';
-  const CLS_OFF = 'off'
+  const CLS_OFF = 'off';
     export default {
         name: "star",
         props: {
