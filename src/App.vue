@@ -15,11 +15,13 @@
     <transition :name="transitionName">
       <router-view class="content-view"></router-view>
     </transition>
+    <shopcart></shopcart>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import header from 'components/header/header';
+  import shopcart from 'components/shopcart/shopcart';
   import Vue from 'vue';
   import Axios from 'axios';
   import VueAxios from 'vue-axios';
@@ -50,7 +52,8 @@
       }
     },
     components: {
-      'v-header': header
+      'v-header': header,
+      shopcart
     }
   };
 </script>
