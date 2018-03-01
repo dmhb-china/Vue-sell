@@ -3,15 +3,16 @@
       <div class="content">
         <div class="content-left">
           <div class="logo-wrapper">
-            <div class="logo">
-              <i class="icon-shopping_cart"></i>
+            <div class="logo" :class="{'highlight': totalCount > 0}">
+              <i class="icon-shopping_cart" :class="{'highlight': totalCount > 0}"></i>
             </div>
+            <div class="num">{{totalCount}}</div>
           </div>
-          <div class="price">￥123</div>
-          <div class="desc">另需配送费￥4元</div>
+          <div class="price" :class="{'highlight': totalCount > 0}">￥{{totalPrice}}</div>
+          <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
         </div>
         <div class="content-right">
-          ￥20起送
+          <div class="pay">￥{{minPrice}}元起送</div>
         </div>
       </div>
     </div>
@@ -19,7 +20,44 @@
 
 <script type="text/ecmascript-6">
     export default {
-        name: "shopcart"
+        name: "shopcart",
+        props: {
+          selectFoods: {
+            type: Array,
+            default() {
+              return [
+                {
+                  price: 10,
+                  count: 1
+                }
+              ];
+            }
+          },
+          deliveryPrice: {
+            type: Number,
+            default: 0
+          },
+          minPrice: {
+            type: Number,
+            default: 0
+          }
+        },
+        computed: {
+          totalPrice() {
+            let total = 0;
+            this.selectFoods.forEach((food) => {
+              total += food.price * food.count;
+            });
+            return total;
+          },
+          totalCount() {
+            let count = 0;
+            this.selectFoods.forEach((food) => {
+              count += food.count;
+            });
+            return count;
+          }
+        }
     };
 </script>
 
@@ -48,16 +86,34 @@
         vertical-align: top
         border-radius: 50%
         background: #141d27
+        .num
+          position: absolute
+          top: 0
+          right: 0
+          width: 24px
+          height: 16px
+          line-height: 16px
+          text-align: center
+          border-radius: 16px
+          font-size: 9px
+          font-weight: 700
+          color: #fff
+          background: rgb(240, 20, 20)
+          box-shadow: 0 4px 8px 0 rgba(0,0,0,0.4)
         .logo
           width: 100%
           height: 100%
           border-radius: 50%
           background: #2b343c
           text-align: center
+          &.highlight
+            background: rgb(0,160,220)
           .icon-shopping_cart
             line-height: 44px
             font-size: 24px
             color: #80858a
+            &.highlight
+              color: #fff!important
       .price
         display: inline-block
         font-size: 16px
@@ -65,6 +121,8 @@
         line-height: 24px
         margin: 10px 12px 12px 18px
         color: rgba(255,255,255,0.4)
+        &.highlight
+          color: #fff!important
       .desc
         display: inline-block
         font-size: 12px
@@ -74,4 +132,12 @@
     .content-right
       flex: 0 0 105px
       width: 105px
+      .pay
+        height: 48px
+        line-height: 48px
+        font-size: 12px
+        text-align: center
+        color: rgba(255,255,255,0.4)
+        font-weight: 700
+        background: #2b333b
 </style>
