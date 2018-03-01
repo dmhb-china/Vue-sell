@@ -38,6 +38,7 @@
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
+  import cartControl from 'components/cartcontrol/cartcontrol';
     export default {
         name: 'goods',
         props: {},
