@@ -13,15 +13,13 @@
       </div>
     </div>
     <transition :name="transitionName">
-      <router-view class="content-view"></router-view>
+      <router-view class="content-view" :seller="seller"></router-view>
     </transition>
-    <shopcart></shopcart>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import header from 'components/header/header';
-  import shopcart from 'components/shopcart/shopcart';
   import Vue from 'vue';
   import Axios from 'axios';
   import VueAxios from 'vue-axios';
@@ -39,6 +37,7 @@
       this.axios.get('./api/seller').then((response) => {
         if (response.data.errno === ERR_OK) {
           this.seller = response.data.data;
+          console.log(this.seller.deliveryPrice);
         }
       });
     },
@@ -52,8 +51,7 @@
       }
     },
     components: {
-      'v-header': header,
-      shopcart
+      'v-header': header
     }
   };
 </script>

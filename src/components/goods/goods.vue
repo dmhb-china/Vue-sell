@@ -27,31 +27,45 @@
                     <span class="now">￥{{food.price}}</span>
                     <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
+                  <div class="cartcontrol-wrapper">
+                    <cartControl :food="food"></cartControl>
+                  </div>
                 </div>
               </li>
             </ul>
           </li>
         </ul>
       </div>
+      <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
+  import shopcart from 'components/shopcart/shopcart';
   import cartControl from 'components/cartcontrol/cartcontrol';
     export default {
         name: 'goods',
-        props: {},
+        props: {
+          seller: {
+            type: Object
+          }
+        },
         data() {
           return {
             goods: [],
             listHeight: [],
-            scrollY: 0
+            scrollY: 0,
+            selectedFood: {}
           };
+        },
+        components: {
+          shopcart,
+          cartControl
         },
         created() {
           this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-          this.$http.get('./api/goods').then((res) => {
+          this.$http.get('/api/goods').then((res) => {
             this.goods = res.data.data;
             console.log(this.goods);
             this.$nextTick(() => {
@@ -71,6 +85,17 @@
               }
             }
             return 0;
+          },
+          selectFoods() {
+            let foods = [];
+            this.goods.forEach((good) => {
+              good.foods.forEach((food) => {
+                if (food.count) {
+                  foods.push(food);
+                }
+              });
+            });
+            return foods;
           }
         },
         methods: {
@@ -88,15 +113,6 @@
             }
             this.selectedFood = food;
             this.$refs.food.show();
-          },
-          addFood(target) {
-            this._drop(target);
-          },
-          _drop(target) {
-            // 体验优化,异步执行下落动画
-            this.$nextTick(() => {
-              this.$refs.shopcart.drop(target);
-            });
           },
           _initScroll() {
             this.menuScroll = new BScroll(this.$refs.menuWrapper, {
@@ -240,4 +256,8 @@
             font-size: 10px
             color: rgb(147,153,159)
             line-height: 24px
+        .cartcontrol-wrapper
+          position: absolute
+          right: 0
+          bottom: 12px
 </style>
