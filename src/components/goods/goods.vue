@@ -28,7 +28,7 @@
                     <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    <cartControl :food="food"></cartControl>
+                    <cartControl @add="addFood" :food="food"></cartControl>
                   </div>
                 </div>
               </li>
@@ -67,7 +67,6 @@
           this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
           this.$http.get('/api/goods').then((res) => {
             this.goods = res.data.data;
-            console.log(this.goods);
             this.$nextTick(() => {
               this._initScroll();
               this._calculateHeight();
@@ -113,6 +112,15 @@
             }
             this.selectedFood = food;
             this.$refs.food.show();
+          },
+          addFood(target) {
+            this._drop(target);
+          },
+          _drop(target) {
+            // 体验优化,异步执行下落动画
+            this.$nextTick(() => {
+              this.$refs.shopcart.drop(target);
+            });
           },
           _initScroll() {
             this.menuScroll = new BScroll(this.$refs.menuWrapper, {

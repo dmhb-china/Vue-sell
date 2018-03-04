@@ -19,6 +19,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { urlParse } from "./common/js/util";
   import header from 'components/header/header';
   import Vue from 'vue';
   import Axios from 'axios';
@@ -30,14 +31,19 @@
     data() {
       return {
         transitionName: 'slide-left',
-        seller: {}
+        seller: {
+          id: (() => {
+            let queryParam = urlParse();
+            return queryParam.id;
+          }
+          )()
+        }
       };
     },
     created() {
       this.axios.get('./api/seller').then((response) => {
         if (response.data.errno === ERR_OK) {
           this.seller = response.data.data;
-          console.log(this.seller.deliveryPrice);
         }
       });
     },
