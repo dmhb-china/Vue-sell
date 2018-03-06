@@ -12,7 +12,7 @@
           <li v-for="item in goods" class="food-list" ref="foodList" :key="item.id">
             <h1 class="title">{{item.name}}</h1>
             <ul>
-              <li v-for="food in item.foods" :key="food.id" class="food-item border-1px">
+              <li @click="selectFood(food,$event)" v-for="food in item.foods" :key="food.id" class="food-item border-1px">
                 <div class="icon">
                   <img width="57" height="57" :src="food.icon" alt="">
                 </div>
@@ -37,6 +37,7 @@
         </ul>
       </div>
       <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+      <food :food="selectedFood" ref="food"></food>
     </div>
 </template>
 
@@ -44,6 +45,7 @@
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcart/shopcart';
   import cartControl from 'components/cartcontrol/cartcontrol';
+  import food from 'components/food/food';
     export default {
         name: 'goods',
         props: {
@@ -61,7 +63,8 @@
         },
         components: {
           shopcart,
-          cartControl
+          cartControl,
+          food
         },
         created() {
           this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
@@ -107,6 +110,7 @@
             this.foodsScroll.scrollToElement(el, 300);
           },
           selectFood(food, event) {
+            console.log(12);
             if (!event._constructed) {
               return;
             }
